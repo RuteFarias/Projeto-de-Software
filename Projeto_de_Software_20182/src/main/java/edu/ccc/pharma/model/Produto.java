@@ -6,10 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
-enum CategoriaProduto {
-	medicamentos, higiene,cosmesticos, alimentos; 
-}
+
 
 /**
  * 
@@ -25,34 +25,64 @@ public class Produto implements Serializable{
     @Id
     private String id;
 
-    @Column
+	@Column(name = "nome")
+    @NotNull(message = "Entrada invalida!")
+	@NotEmpty(message = "Campo vazio!")
     private String nome;
 
-    @Column
+    @Column(name = "codigoBarras")
+    @NotNull(message = "Entrada invalida!")
+	@NotEmpty(message = "Campo vazio!")
     private String codigoBarras;
     
-    @Column 
+    @Column(name = "fabricante")
+    @NotNull(message = "Entrada invalida!")
+	@NotEmpty(message = "Campo vazio!")
     private String fabricante;
     
-    @Column 
-    private String situacao;
+    @Column(name = "situacao")
+    @NotNull(message = "Entrada invalida!")
+	@NotEmpty(message = "Campo vazio!")
+    private Boolean situacao;
     
-    @Column
-    private CategoriaProduto categoria;
+    @Column(name = "categoria")
+    @NotNull(message = "Entrada invalida!")
+	@NotEmpty(message = "Campo vazio!")
+    private String categoria;
+    
+    @Column(name = "quantidade")
+    @NotNull(message = "Entrada invalida!")
+	@NotEmpty(message = "Campo vazio!")
+    private int quantidade;
+    
+    @Column(name = "desconto")
+	private Integer desconto = 0;
+    
+    @Column(name = "preco")
+	private Double preco;
 
     public Produto() {}
 
-    public Produto(String id, String nome, String codigoBarras, String fabricante, String situacao, CategoriaProduto categoria) {
+    public Produto(String id, String nome, String codigoBarras, String fabricante, String categoria, int quantidade, double preco) {
         super();
         
         this.id = id;
         this.nome = nome;
         this.codigoBarras = codigoBarras;
         this.fabricante = fabricante;
-        this.situacao = situacao;
         this.categoria = categoria;
+        this.quantidade = quantidade;
+        this.preco = preco;
     }
     
+
+	public int getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(int quantidade) {
+		this.quantidade = quantidade;
+	}
 
 	public String getId() {
 		return id;
@@ -86,22 +116,42 @@ public class Produto implements Serializable{
 		this.fabricante = fabricante;
 	}
 
-	public String getSituacao() {
+	public boolean getSituacao() {
 		return situacao;
 	}
 
-	public void setSituacao(String situacao) {
+	public void setSituacao(Boolean situacao) {
 		this.situacao = situacao;
 	}
 
-	public CategoriaProduto getCategoria() {
+	public String getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(CategoriaProduto categoria) {
+	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
-    
+	
+	public void subQuantidade() {
+		this.quantidade = this.quantidade - 1;
+	}
+
+	public Integer getDesconto() {
+		return desconto;
+	}
+
+	public void setDesconto(Integer desconto) {
+		this.desconto = desconto;
+	}
+
+	public Double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(Double preco) {
+		this.preco = preco;
+	}
+
     
 
    

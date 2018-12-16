@@ -3,6 +3,7 @@ package edu.ccc.pharma.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ccc.pharma.model.Produto;
@@ -27,35 +29,46 @@ import edu.ccc.pharma.service.ProdutoService;
 
 public class ProdutoController {
 	@Autowired
-    private ProdutoService produtoService;
+	ProdutoService produtoService;
 
-    @GetMapping
-    public List<Produto> getProduto() {
-        return this.produtoService.getAll();
-    }
-    
-    @GetMapping(value="/{id}")
-    public Produto findById(@PathVariable(value = "id") String id) {
-        return this.produtoService.findById(id);
-    }
-
-    @PostMapping
-    public Produto inserirProduto(@RequestBody Produto produto) {
-        return this.produtoService.inserirProduto(produto);
-    }
-        
-
-    @PutMapping(value="/{id}")
-    public Produto atualizarProduto(@PathVariable String id, @RequestBody Produto produto) {
-        return this.produtoService.atualizarProduto(id, produto);
-    }
-
-    @DeleteMapping(value="/{id}")
-    public Produto excluirProduto(@PathVariable String id, @RequestBody Produto produto) {
-        return this.produtoService.excluirProduto(id, produto);
-    }
- 
+	@RequestMapping(value = "/produtos/orderbyprice", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+	public List<Produto> getprodutosperPrice() {
+		return this.produtoService.orderByPrice();
+	}
 	
+	@RequestMapping(value = "/produtos/orderbyname", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+	public List<Produto> getprodutosperName() {
+		return this.produtoService.orderByNome();
+	}
 	
+	@RequestMapping(value = "/produtos/orderbycategory", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+	public List<Produto> getprodutosByCategory() {
+		return this.produtoService.orderByCategory();
+	}
+	
+	@RequestMapping(value = "/produtos/crud/{codigo}", method = RequestMethod.DELETE)
+	public Produto deleteproduto(@PathVariable String codigo) {
+		return this.produtoService.excluirProduto(codigo);
+	}
+	
+	@RequestMapping(value = "/produtos/crud", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+	public Produto addproduto(@RequestBody Produto produto) throws Exception {
+		return this.produtoService.inserirProduto(produto);
+	}
+	
+	@RequestMapping(value = "/produtos/crud/{codigo}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PUT)
+	public Double serPrice(@PathVariable String codigo, @RequestBody Double preco) throws Exception {
+		return this.produtoService.mudarPreco(codigo, preco);
+	}
+
+	@RequestMapping(value = "/produtos/desconto/{categoria}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PUT)
+	public void atribuirDesconto(@PathVariable String categoria, @RequestBody Integer desconto) {
+		this.produtoService.atribuirDesconto(categoria, desconto);
+	}
+		
+	@RequestMapping(value = "/produtos", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+	public List<Produto> getprodutos() {
+		return this.produtoService.getAll();
+	}
 
 }
