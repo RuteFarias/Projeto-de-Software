@@ -15,12 +15,6 @@ public class Administrador {
     @Column(name = "usuario")
     private String usuario;
 
-    @Column(name = "nome")
-    @NotNull(message = "Entrada invalida!")
-    @NotEmpty(message = "Campo vazio!")
-    private String nome;
-
-
     @Column(name = "senha")
     @NotNull(message = "Entrada invalida")
     @NotEmpty(message = "Campo vazio!")
@@ -30,26 +24,17 @@ public class Administrador {
 
     }
 
-    public Administrador(String usuario, String nome, String senha) {
-    	 this.usuario = "RootFarias";
-         this.nome = "Rute";
-         this.senha = "116211043";
+    public Administrador(String usuario, String senha) {
+    	 this.usuario = usuario;
+         this.senha = senha;
     }
 
     public String getUsuario() {
         return this.usuario;
     }
 
-    public String getNome() {
-        return this.nome;
-    }
-
     public String getSenha() {
         return this.senha;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
     
     public void setSenha(String senha) {
